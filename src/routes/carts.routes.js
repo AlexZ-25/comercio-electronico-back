@@ -2,19 +2,24 @@ const { Router } = require("express");
 
 const {
   getCarts,
-//   createCart,
-//   updateCart,
-//   deleteCart,
+  getCart,
+  createCart,
+  updateCart,
+  deleteCart,
 } = require("../controllers/carts.controller");
+
+const { validarJWT } = require("../middlewares/jwt.middleware");
 
 const router = Router();
 
-router.get("/", getCarts);
+router.get("/", validarJWT, getCarts);
 
-// router.post("/", createCart);
+router.get("/:idCart", getCart);
 
-// router.put("/:idUser", updateCart);
+router.post("/", createCart);
 
-// router.delete("/:idUser", deleteCart);
+router.put("/:idUser", updateCart);
+
+router.delete("/:idUser", deleteCart);
 
 module.exports = router;

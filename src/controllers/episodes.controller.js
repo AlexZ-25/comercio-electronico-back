@@ -10,10 +10,71 @@ const getEpisodes = async (req, res) => {
     });
 };
 
+const getEpisode = async (req, res) => {
+    // const { idEpisode } = req.params;
+    // const episode = await Episode.findById(idEpisode);
+    const { idEpisode } = req.params;
+    episode = await Episode.findOne({ Id: idEpisode })
+
+    return res.json({
+        msg: "Episodio obtenido",
+        data: episode,
+    });
+};
+
+const createEpisode = async (req, res) => {
+    const { Id, Nombre, URL } = req.body;
+
+    const episode = {
+        Id,
+        Nombre,
+        URL
+    }
+
+    const newEpisode = await Episode.create(episode);
+
+    return res.json({
+        msg: "Episodio creado",
+        data: newEpisode,
+    });
+};
+
+const updateEpisode = async (req, res) => {
+    const { idEpisode } = req.params;
+    const { Nombre, URL } = req.body;
+
+    const episode = {
+        Nombre,
+        URL,
+    };
+
+    const updatedEpisode = await Episode.findOneAndUpdate(
+        { Id: idEpisode }, episode,
+        { new: true }
+    );
+
+    return res.json({
+        msg: "Episodio actualizado",
+        data: updatedEpisode,
+    });
+};
+
+const deleteEpisode = async (req, res) => {
+    const { idEpisode } = req.params;
+
+    const deletedEpisode = await Episode.findOneAndDelete({Id: idEpisode})
+
+    return res.json({
+        msg: "Episodio eliminado",
+        data: deletedEpisode,
+    });
+};
+
 
 module.exports = {
     getEpisodes,
-    // createEpisode,
-    // updateEpisode,
-    // deleteEpisode,
+    getEpisode,
+    createEpisode,
+    updateEpisode,
+    deleteEpisode,
 };

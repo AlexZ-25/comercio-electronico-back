@@ -2,19 +2,27 @@ const { Router } = require("express");
 
 const {
   getUsers,
-//   createUser,
-//   updateUser,
-//   deleteUser,
+  getUser,
+  createUser,
+  login,
+  updateUser,
+  deleteUser,
 } = require("../controllers/users.controller");
+
+const { validarJWT } = require("../middlewares/jwt.middleware");
 
 const router = Router();
 
-router.get("/", getUsers);
+router.get("/",validarJWT, getUsers);
 
-// router.post("/", createUser);
+router.get("/:idUser", getUser);
 
-// router.put("/:idUser", updateUser);
+router.post("/", createUser);
 
-// router.delete("/:idUser", deleteUser);
+router.post("/login", login);
+
+router.put("/:idUser", updateUser);
+
+router.delete("/:idUser", deleteUser);
 
 module.exports = router;

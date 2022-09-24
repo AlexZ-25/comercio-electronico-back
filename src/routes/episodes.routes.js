@@ -2,19 +2,24 @@ const { Router } = require("express");
 
 const {
   getEpisodes,
-//   createEpisode,
-//   updateEpisode,
-//   deleteEpisode,
+  getEpisode,
+  createEpisode,
+  updateEpisode,
+  deleteEpisode,
 } = require("../controllers/episodes.controller");
+
+const { validarJWT } = require("../middlewares/jwt.middleware");
 
 const router = Router();
 
 router.get("/", getEpisodes);
 
-// router.post("/", createEpisode);
+router.get("/:idEpisode", getEpisode);
 
-// router.put("/:idEpisode", updateEpisode);
+router.post("/", validarJWT, createEpisode);
 
-// router.delete("/:idEpisode", deleteEpisode);
+router.put("/:idEpisode", validarJWT, updateEpisode);
+
+router.delete("/:idEpisode", validarJWT, deleteEpisode);
 
 module.exports = router;
