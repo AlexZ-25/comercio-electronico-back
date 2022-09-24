@@ -148,6 +148,18 @@ const deleteUser = async (req, res) => {
     });
 };
 
+const verifyUser = async (req, res) => {
+    const { usuario } = req;
+  
+    const token = await generarJWT(usuario.id);
+  
+    return res.json({
+      ok: true,
+      msg: "Usuario validado",
+      data: usuario,
+      token,
+    });
+  };
 
 module.exports = {
     getUsers,
@@ -156,4 +168,5 @@ module.exports = {
     login,
     updateUser,
     deleteUser,
+    verifyUser,
 };
