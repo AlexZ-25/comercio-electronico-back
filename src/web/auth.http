@@ -1,0 +1,12 @@
+@api = http://localhost:4003/users/
+
+GET {{api}}
+auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMmYyYWRhYWZmNGMzMDBjZmY3NzAzMyIsImlhdCI6MTY2NDI0MjE4MSwiZXhwIjoxNjY0MjU2NTgxfQ.dPupqv8coVWfCxDM5ti0RCm39CgTHN5eq5mJWGZzJY8
+
+
+# POST {{api}}
+# Content-Type: application/json
+# {
+#     "username": "AlexZ25",
+#     "password": "admin"
+# }

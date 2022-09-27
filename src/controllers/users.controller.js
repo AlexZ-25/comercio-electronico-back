@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { generarJWT } = require("../helpers/jwt.helper");
+const { validarJWTUser } = require("../middlewares/jwt.middleware");
 
 const getUsers = async (req, res) => {
     const usuarios = await User.find();
@@ -78,42 +79,42 @@ const createUser = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-      const { username, password } = req.body;
-  
-      const user = await User.findOne({ username });
-  
-      if (!user) {
-        return res.status(404).json({
-          ok: false,
-          msg: "Error al iniciar sesion - no se encontro el usuario",
+        const { username, password } = req.body;
+
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({
+                ok: false,
+                msg: "Error al iniciar sesion - no se encontro el usuario",
+            });
+        }
+
+        const validarPassword = bcrypt.compareSync(password, user.password);
+
+        if (!validarPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: "Error al iniciar sesion - contrasenia incorrecta",
+            });
+        }
+
+        const token = await generarJWT(user.id);
+
+        return res.json({
+            ok: true,
+            msg: "Acceso otorgado",
+            data: user,
+            token,
         });
-      }
-  
-      const validarPassword = bcrypt.compareSync(password, user.password);
-  
-      if (!validarPassword) {
-        return res.status(400).json({
-          ok: false,
-          msg: "Error al iniciar sesion - contrasenia incorrecta",
-        });
-      }
-  
-      const token = await generarJWT(user.id);
-  
-      return res.json({
-        ok: true,
-        msg: "Acceso otorgado",
-        data: user,
-        token,
-      });
     } catch (error) {
-      return res.status(500).json({
-        ok: false,
-        msg: "Problemas del lado del servidor",
-        data: [],
-      });
+        return res.status(500).json({
+            ok: false,
+            msg: "Problemas del lado del servidor",
+            data: [],
+        });
     }
-  };
+};
 
 const updateUser = async (req, res) => {
     const { idUser } = req.params;
@@ -150,16 +151,17 @@ const deleteUser = async (req, res) => {
 
 const verifyUser = async (req, res) => {
     const { usuario } = req;
-  
+
     const token = await generarJWT(usuario.id);
-  
+
     return res.json({
-      ok: true,
-      msg: "Usuario validado",
-      data: usuario,
-      token,
+        ok: true,
+        msg: "Usuario validado",
+        data: usuario,
+        token,
     });
-  };
+};
+
 
 module.exports = {
     getUsers,

@@ -10,13 +10,13 @@ const {
   verifyUser,
 } = require("../controllers/users.controller");
 
-const { validarJWT } = require("../middlewares/jwt.middleware");
+const { validarJWT, validarJWTUser } = require("../middlewares/jwt.middleware");
 
 const router = Router();
 
 router.get("/",validarJWT, getUsers);
 
-router.get("/auth", verifyUser);
+router.get("/auth", validarJWTUser, verifyUser);
 
 router.get("/:idUser", getUser);
 
